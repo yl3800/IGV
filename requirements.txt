@@ -1,0 +1,80 @@
+backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
+bert-score==0.3.6
+block==0.0.5
+block.bootstrap.pytorch==0.1.6
+bootstrap.pytorch==0.0.13
+certifi==2020.12.5
+chardet==4.0.0
+click==8.0.0
+cycler==0.10.0
+dataclasses==0.8
+decorator==4.4.2
+entrypoints==0.3
+filelock==3.3.1
+future==0.18.2
+h5py==2.7.1
+huggingface-hub==0.0.19
+idna==2.10
+imageio==2.9.0
+importlib-metadata==4.8.1
+importlib-resources==5.1.3
+ipdb==0.13.7
+ipykernel @ file:///tmp/build/80754af9/ipykernel_1596206602906/work/dist/ipykernel-5.3.4-py3-none-any.whl
+ipython @ file:///tmp/build/80754af9/ipython_1593447367857/work
+ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
+jedi==0.18.0
+joblib==1.1.0
+jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1630690655192/work
+jupyter-core @ file:///tmp/build/80754af9/jupyter_core_1633420100582/work
+kiwisolver==1.3.1
+matplotlib==3.3.4
+munch==2.5.0
+nest-asyncio @ file:///tmp/build/80754af9/nest-asyncio_1613680548246/work
+networkx==2.5.1
+nltk==3.3
+numpy==1.19.5
+opencv-python==4.5.2.52
+packaging==21.0
+pandas==1.1.2
+parso @ file:///tmp/build/80754af9/parso_1617223946239/work
+pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
+pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
+Pillow==8.2.0
+plotly==4.14.3
+pretrainedmodels==0.7.4
+prompt-toolkit==3.0.18
+protobuf==3.17.0
+ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+Pygments==2.9.0
+pyparsing==2.4.7
+python-dateutil==2.8.1
+pytz==2021.1
+PyWavelets==1.1.1
+pywsd==1.2.4
+PyYAML==5.4.1
+pyzmq @ file:///tmp/build/80754af9/pyzmq_1628268400816/work
+regex==2021.10.23
+requests==2.25.1
+retrying==1.3.3
+sacremoses==0.0.46
+scikit-image==0.17.2
+scipy==1.5.4
+seaborn==0.11.1
+six @ file:///tmp/build/80754af9/six_1623709665295/work
+skipthoughts==0.0.1
+tabulate==0.8.9
+tensorboardX==2.2
+tifffile==2020.9.3
+tokenizers==0.10.3
+toml==0.10.2
+torch==1.6.0
+torchvision==0.7.0
+tornado @ file:///tmp/build/80754af9/tornado_1606942266872/work
+tqdm==4.60.0
+traitlets @ file:///tmp/build/80754af9/traitlets_1632746497744/work
+transformers==4.11.3
+typing-extensions==3.10.0.2
+urllib3==1.26.4
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+wn==0.0.23
+zipp==3.4.1

@@ -1,0 +1,1 @@
+python train_val.py -v='trial_run'
