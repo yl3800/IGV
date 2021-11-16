@@ -59,7 +59,7 @@ class AttentionScore(nn.Module):
 class MemBank(nn.Module):
     def __init__(self):
         super().__init__()
-        bank_path='/storage_fast/ycli/vqa/mem_bank/msrvtt/app_mot_train.h5'
+        bank_path='../mem_bank/msrvtt/app_mot_train.h5' # memory bank is construct by training video
         with h5py.File(bank_path) as f:
             # self.mem_bank=torch.Tensor(f['app_mot_feat'][:][:3000,:,:])
             self.mem_bank=torch.Tensor(f['app_mot_feat'][:])

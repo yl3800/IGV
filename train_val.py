@@ -176,11 +176,11 @@ if __name__ == "__main__":
 
     # Data set&Loader
     if not args.nfs:
-        video_feature_path = '/raid/ycli/vqa/qa_feat/msrvtt'
-        sample_list_path = '/raid/ycli/vqa/qa_dataset/msr-vtt/MSRVTT-QA/from_jb'
+        video_feature_path = '../vqa/qa_feat/msrvtt' # .h5 file
+        sample_list_path = '../vqa/qa_dataset/msr-vtt/MSRVTT-QA' # .csv file
     else:
-        video_feature_path = '/storage_fast/ycli/vqa/qa_feat/msrvtt'
-        sample_list_path = '/storage_fast/ycli/vqa/qa_dataset/msr-vtt/MSRVTT-QA/from_jb'
+        video_feature_path = '../qa_feat/msrvtt' # .h5 file
+        sample_list_path = '../vqa/qa_dataset/msr-vtt/MSRVTT-QA' # .csv file
 
     train_dataset=VidQADataset(video_feature_path, sample_list_path, 'train',args.ans_num)
     val_dataset=VidQADataset(video_feature_path, sample_list_path, 'val',args.ans_num)

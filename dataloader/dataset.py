@@ -27,10 +27,9 @@ class VidQADataset(Dataset):
         self.mode = mode
         self.video_feature_path = video_feature_path
         sample_list_file = osp.join(sample_list_path, '{}.csv'.format(mode))
-        self.sample_list = load_file(sample_list_file)#[:1000]
+        self.sample_list = load_file(sample_list_file)
         print('dataset len' , len(self.sample_list))
-        # self.ans2idx=load_file(osp.join(sample_list_path, 'stats/top_{}_ans2idx.json'.format(ans_vocab_num)))
-        ans=load_file('/storage_fast/ycli/vqa/qa_dataset/msr-vtt/MSRVTT-QA/stats/ans_word_{}.json'.format(ans_vocab_num))
+        ans=load_file('../qa_dataset/msr-vtt/MSRVTT-QA/stats/ans_word_{}.json'.format(ans_vocab_num))
         self.ans2idx={a:idx for idx,a in enumerate(ans)}
         self.bert_file = osp.join(video_feature_path, 'qas_bert/bert_ft_{}.h5'.format(mode))
         frame_feat_file = osp.join(video_feature_path, 'frame_feat/app_feat_{}.h5'.format(mode))
@@ -102,8 +101,8 @@ class VidQADataset(Dataset):
 
 if __name__ == "__main__":
 
-    video_feature_path = '/raid/ycli/vqa/qa_feat/msrvtt'
-    sample_list_path = '/raid/ycli/vqa/qa_dataset/msr-vtt/MSRVTT-QA/from_jb'
+    video_feature_path = '../vqa/qa_feat/msrvtt'
+    sample_list_path = '../vqa/qa_dataset/msr-vtt/MSRVTT-QA'
     train_dataset=VidQADataset(video_feature_path, sample_list_path, 'train',1000)
     # val_dataset=VidQADataset(video_feature_path, sample_list_path, 'val',1000)
 
