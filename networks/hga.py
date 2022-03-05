@@ -63,7 +63,7 @@ class EncoderQns(nn.Module):
         output, _ = pad_packed_sequence(packed_output, batch_first=True)
 
         # hidden = torch.squeeze(hidden)
-        hidden = hidden.reshape(hidden.size()[1], -1)
+        hidden = torch.cat([hidden[0], hidden[1]], dim=-1)
         output = self.q_input_ln(output) # bs,q_len,hidden_dim
 
         return output, hidden
@@ -136,7 +136,7 @@ class EncoderVidHGA(nn.Module):
             foutput, _ = pad_packed_sequence(foutput, batch_first=True)
 
         # fhidden = torch.squeeze(fhidden)
-        fhidden = fhidden.reshape(fhidden.size()[1], -1)
+        fhidden = torch.cat([fhidden[0], fhidden[1]], dim=-1)
         foutput = self.v_input_ln(foutput) # bs,16,hidden_dim
 
         if fg_mask is not None:
