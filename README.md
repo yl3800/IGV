@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <h2 align="center">
 Invariant Grounding for Video Question Answering 🔥
 </h2>
@@ -14,7 +13,9 @@ Invariant Grounding for Video Question Answering 🔥
 ## Overview 
 This repo contains source code for **Invariant Grounding for Video Question Answering** (CVPR 2022 Oral, Best Paper Finalists). In this work, propose a new learning framework, Invariant Grounding for VideoQA (**IGV**), to ground the question-critical scene, whose causal relations with answers are invariant across different interventions on the complement. With IGV, the VideoQA models are forced to shield the answering process from the negative influence of spurious correlations, which significantly improves the reasoning ability.
 
- <center> <img src="figures/framework.png" height="200">< </center>
+<p align="center">
+    <img src="figures/framework.png" height="200">< </center>
+</p>
 
 ## Installation
 - Main packages: PyTorch = 1.11 
