@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h2 align="center">
 Invariant Grounding for Video Question Answering 🔥
 </h2>
