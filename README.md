@@ -22,13 +22,13 @@ This repo contains source code for **Invariant Grounding for Video Question Answ
 - See `requirements.txt` for other packages.
 
 ## Data Preparation
-We use MSVD-QA as an example to help get farmiliar with the code. Please download the dataset from [here](https://github.com/xudejing/video-question-answering) and the pre-computed features and trained models [here](https://drive.google.com/file/d/1wXJWnIWiVekOy4dfzlDMSAEC-IKDuxbT/view?usp=sharing)
+We use MSVD-QA as an example to help get farmiliar with the code. Please download the dataset from [here](https://github.com/xudejing/video-question-answering) and the pre-computed features [here](https://drive.google.com/file/d/1wXJWnIWiVekOy4dfzlDMSAEC-IKDuxbT/view?usp=sharing)
 
 After downloading the data, please modify your data path and feature path in `run.py`.
 
 ## Run IGV
 
-Simply run `run.sh` to reproduce the results in the paper. We have saved our checkpoint in `models\` (acc 41.42) for your references.
+Simply run `run.sh` to reproduce the results in the paper. We have saved our checkpoint [here](https://drive.google.com/file/d/1oQfLa9ZIjiYTM8Dw8vEFNylgifsv4hYf/view?usp=sharing) (acc 41.42) for your references.
 
 
 ## Reference 
