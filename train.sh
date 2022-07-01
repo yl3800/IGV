@@ -1,1 +1,2 @@
-python train_val.py -v='trial_run'
+python run.py -v='IGV'
+

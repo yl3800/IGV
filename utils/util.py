@@ -1,4 +1,6 @@
 import json
+import torch
+import random
 import os
 import os.path as osp
 import re
@@ -16,7 +18,7 @@ def set_gpu_devices(gpu_id):
 def load_file(file_name):
     annos = None
     if osp.splitext(file_name)[-1] == '.csv':
-        return pd.read_csv(file_name)
+        return pd.read_csv(file_name, sep='\t')
     with open(file_name, 'r') as fp:
         if osp.splitext(file_name)[1]== '.txt':
             annos = fp.readlines()
@@ -94,3 +96,13 @@ class EarlyStopping():
             if self.counter >= self.patience:
                 print('INFO: Early stopping')
                 self.early_stop = True
+
+def set_seed(seed):
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False

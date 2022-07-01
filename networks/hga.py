@@ -8,10 +8,9 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import sys
 sys.path.append('../')
 from utils.util import pause
-from networks.q_v_transformer import CoAttention
 from networks.gcn import AdjLearner, GCN
-from networks.mem_bank import AttentionScore, MemBank
-from networks.util import length_to_mask
+from networks.grounding_indicator import Grounding_Indicator
+from networks.util import length_to_mask, intervene
 from block import fusions #pytorch >= 1.1.0
 
 
@@ -62,7 +61,6 @@ class EncoderQns(nn.Module):
         packed_output, hidden = self.rnn(packed)
         output, _ = pad_packed_sequence(packed_output, batch_first=True)
 
-        # hidden = torch.squeeze(hidden)
         hidden = torch.cat([hidden[0], hidden[1]], dim=-1)
         output = self.q_input_ln(output) # bs,q_len,hidden_dim
 
@@ -147,7 +145,7 @@ class EncoderVidHGA(nn.Module):
 
 
 class HGA(nn.Module):
-    def __init__(self, vocab_num, hidden_dim = 512,  word_dim = 512, input_dropout_p=0.5, tau=1, num_layers=1):
+    def __init__(self, vocab_num, hidden_dim = 512,  word_dim = 512, input_dropout_p=0.5, tau=1, num_layers=1, memory=None):
         """
         Reasoning with Heterogeneous Graph Alignment for Video Question Answering (AAAI2020)
         """
@@ -156,14 +154,12 @@ class HGA(nn.Module):
         self.tau=tau
         self.vid_encoder = EncoderVidHGA(vid_dim, hidden_dim, input_dropout_p=input_dropout_p,bidirectional=True, rnn_cell='gru')
         self.qns_encoder = EncoderQns(word_dim, hidden_dim, n_layers=1,rnn_dropout_p=0, input_dropout_p=input_dropout_p, bidirectional=True, rnn_cell='gru')
+        self.memory_bank = memory
 
         hidden_size = self.vid_encoder.dim_hidden*2
         input_dropout_p = self.vid_encoder.input_dropout_p
 
-        self.fg_att = AttentionScore(hidden_size)
-        self.bg_att = AttentionScore(hidden_size)
-
-        self.mem_swap = MemBank()
+        self.indicator = Grounding_Indicator(hidden_size, tau, True, input_dropout_p)
         
         self.adj_learner = AdjLearner(
             hidden_size, hidden_size, dropout=input_dropout_p)
@@ -200,45 +196,23 @@ class HGA(nn.Module):
         v_local, _ = self.vid_encoder(vid_feats)
         
         ## fg/bg att
-        fg_mask, bg_mask =self.frame_att(q_global, v_local) #[bs, 16]
+        fg_mask, bg_mask =self.indicator(q_global, v_local) #[bs, 16]
 
         ## bg branch
-        v_local_b, v_global_b, bg_mask = self.vid_encoder(vid_feats, bg_mask.bool())
+        v_local_b, v_global_b, bg_mask = self.vid_encoder(vid_feats*(bg_mask.unsqueeze(-1)), bg_mask.bool())
         out_b = self.fusion_predict(q_global, v_global_b, q_local, v_local_b, qns_lengths, v_len=bg_mask.sum(-1))
 
-
         ## fg branch
-        # v_local_f, v_global_f = self.vid_encoder(vid_feats, fg_mask.bool())
-        v_local_f, v_global_f, fg_mask = self.vid_encoder(vid_feats, fg_mask.bool())
+        v_local_f, v_global_f, fg_mask = self.vid_encoder(vid_feats*(fg_mask.unsqueeze(-1)), fg_mask.bool())
         bg_mask=1-fg_mask
         out_f = self.fusion_predict(q_global, v_global_f, q_local, v_local_f, qns_lengths, v_len=fg_mask.sum(-1))
 
         ## mem branch
-        vid_feats_m = self.mem_swap(bg_mask, vid_feats, vid_idx)
+        vid_feats_m = intervene(self.memory_bank, bg_mask, vid_feats, vid_idx)
         v_local_m, v_global_m = self.vid_encoder(vid_feats_m)
-        # print(v_local_m.shape, v_global_m.shape)
         out_m = self.fusion_predict(q_global, v_global_m, q_local, v_local_m, qns_lengths)
 
-
         return out_f, out_m, out_b
-
-
-
-    def frame_att(self, q_global, v_local):
-
-        fg_score = self.fg_att(q_global.unsqueeze(1), v_local) #[bs, 1, 16]
-        # bg_score = 1-fg_score
-        bg_score = self.bg_att(q_global.unsqueeze(1), v_local)
-
-        # gumbel_softmax, try tau 1-10
-        score=torch.cat((fg_score,bg_score),1)#[bs, 2, 16]
-        score=F.gumbel_softmax(score, tau=self.tau, hard=True, dim=1) #[bs, 2, 16]
-
-        fg_mask=score[:,0,:]#[bs, 16]
-        bg_mask=score[:,1,:]#[bs, 16]
-
-        return fg_mask, bg_mask
-
 
 
     def fusion_predict(self, q_global, v_global, q_local, v_local, q_len, v_len=None, **kwargs):
