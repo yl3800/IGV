@@ -42,3 +42,6 @@ Simply run `run.sh` to reproduce the results in the paper. We have saved our che
     pages     = {2928-2937}
 }
 ```
+
+## Acknowledgement
+Our reproduction of the methods is based on the respective official repositories and [NExT-QA](https://github.com/doc-doc/NExT-OE), we thank the authors to release their code.
