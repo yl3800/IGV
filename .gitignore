@@ -5,8 +5,4 @@
 *.pkl
 *.ckpt
 
-log/*
-models/*
-prediction/*
-results/*
 __pycache__/
