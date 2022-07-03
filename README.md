@@ -28,7 +28,7 @@ After downloading the data, please modify your data path and feature path in `ru
 
 ## Run IGV
 
-Simply run `run.sh` to reproduce the results in the paper. We have saved our checkpoint [here](https://drive.google.com/file/d/1oQfLa9ZIjiYTM8Dw8vEFNylgifsv4hYf/view?usp=sharing) (acc 41.42) for your references.
+Simply run `run.sh` to reproduce the results in the paper. We have saved our checkpoint [here](https://drive.google.com/file/d/1oQfLa9ZIjiYTM8Dw8vEFNylgifsv4hYf/view?usp=sharing) (acc 41.42 on MSVD-QA) for your references.
 
 
 ## Reference 
