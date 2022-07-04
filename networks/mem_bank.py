@@ -50,7 +50,7 @@ class AttentionScore(nn.Module):
 
 
 
-def intervene(self, bg_mask, vid_feats, vid_idx):
+def intervene(mem_bank, bg_mask, vid_feats, vid_idx):
     '''
     input:
         bg_mask: bs,16 float
@@ -61,29 +61,20 @@ def intervene(self, bg_mask, vid_feats, vid_idx):
         new_vid_feats: bs,16,4096 fix with bg/fg, as indicate by bg_mask
     '''
 
-    self.mem_bank = self.mem_bank.type_as(vid_feats).to(vid_feats.device)
+    mem_bank = mem_bank.type_as(vid_feats).to(vid_feats.device)
     bs, v_len, hid_dim= vid_feats.size()
     ## for each video, get a vid_feats that the composed by bg (random select from other video)
-    weight =  vid_feats.new_ones(bs, self.mem_bank.size(0))
+    weight =  vid_feats.new_ones(bs, mem_bank.size(0))
     # exlude video of this sample from sample pool
     weight[torch.arange(bs), vid_idx] = 0
     weight=weight.unsqueeze(-1).expand(-1, -1, v_len) # bs,6513,16
     weight=weight.reshape(bs, -1) 
     sample_idx=torch.multinomial(weight, num_samples=v_len, replacement=True)
     # get bg:bs,16,4096       
-    sampled_bg=self.mem_bank.view(-1, hid_dim).unsqueeze(0).expand(bs,-1,-1)[torch.arange(bs).unsqueeze(-1), sample_idx.long()] # bs,16, 4096, all bg
+    sampled_bg=mem_bank.view(-1, hid_dim).unsqueeze(0).expand(bs,-1,-1)[torch.arange(bs).unsqueeze(-1), sample_idx.long()] # bs,16, 4096, all bg
     
     # mix fg/bg, indicated by bg_mask
     vid_feats_new = vid_feats*((1-bg_mask).unsqueeze(-1)) + sampled_bg*(bg_mask.unsqueeze(-1)) 
 
     return vid_feats_new
 
-if __name__ == "__main__":
-    vid_feats=torch.ones(2,5,2).float()
-    answers=None
-    qns_keys=None
-    vid_idx=torch.tensor([1,2],dtype=torch.int64)
-    bg_mask=(torch.rand(2,5)>0.5).float()
-    model=MemBank()
-    out = model(bg_mask, vid_feats, vid_idx)
-    print(out.type())

@@ -5,4 +5,5 @@
 *.pkl
 *.ckpt
 
+models/*
 __pycache__/
